@@ -1,0 +1,91 @@
+.Container {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: auto auto;
+    padding: 10px 0;
+
+    .PokeHeaderSection {
+        display: grid;
+        grid-template-columns: auto auto;
+        justify-content: center;
+        gap: 10px;
+
+        h1 {
+            font-weight: 400;
+        }
+    }
+
+
+    .PokeImage {
+        background-color: #F2F2F2;
+        border: none;
+    }
+
+    .PokeDetailsSection {
+        display: grid;
+        grid-template-columns: auto auto;
+        background-color: #30A7D7;
+        border-radius: 10px;
+        width: 400px;
+        height: 200px;
+        padding: 15px;
+
+        p {
+            color: white;
+            padding: 10px 0 5px 0;
+        }
+
+        h4 {
+            padding: 10px 0 5px 0;
+        }
+    }
+
+    .TypeSection {
+        h4, h3 {
+            font-weight: 500;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        h4 {
+            border-radius: 5px;
+            text-align: center;
+            color: white;
+            padding: 5px;
+            width: 100px;
+            background-color: #FD7D24;
+        }
+    }
+
+}
+
+.Section{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.EvolutionSection {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    width: 800px;
+    border-radius: 15px;
+    padding: 60px;
+    background-color: #616161;
+    border: 1px solid black;
+    text-align: center;
+
+    p{
+        color: white;
+        font-weight: 500;
+    }
+}
+
+.EvolutionImageContainer {
+    justify-content: center;
+    .EvolutionImage {
+        background-color: #616161;
+        border: 4px solid white;
+        border-radius: 50%;
+    }
+}

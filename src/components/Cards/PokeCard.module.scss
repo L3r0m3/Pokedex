@@ -1,0 +1,30 @@
+.CardContainer {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    justify-content: center;
+    gap: 1.2rem;
+    padding: 20px 0px;
+
+    .Image {
+        background-color: #F2F2F2;
+        border-radius: 15px;
+        width: 10vw;
+        cursor: pointer;
+    }
+
+    h5 {
+        font-family: Arial, Helvetica, sans-serif sans-serif;
+        padding: 5px;
+        color: gray;
+    }
+
+    h4 {
+        color: black 800;
+        padding: 5px;
+    }
+    
+    h6 {
+        padding: 5px;
+    }
+    
+}
