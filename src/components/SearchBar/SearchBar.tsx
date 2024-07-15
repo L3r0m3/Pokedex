@@ -1,7 +1,5 @@
 import React from "react";
 import SearchBarStyle from "./SearchBar.module.scss";
-import { SearchResultsList } from "./SearchResultsList";
-
 interface SearchBarProps {
   searchQuery: string;
   onSearchChange: (query: string) => void;

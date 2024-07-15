@@ -2,13 +2,15 @@
 
 import { useState, useEffect } from "react";
 import { LoadPokemon, typeColors } from "@/lib/data";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Pokemon, EvolutionChain } from "@/types/types";
 import Image from "next/image";
 import PokePageStyle from "./PokePage.module.scss";
+import { RiArrowRightWideLine } from "react-icons/ri";
 
 const PokePage = () => {
   const { name } = useParams();
+  const router = useRouter();
   const [pokeData, setPokeData] = useState<Pokemon | null>(null);
   const [evolutionChain, setEvolutionChain] = useState<EvolutionChain | null>(
     null
@@ -40,7 +42,7 @@ const PokePage = () => {
     const evolutionChainComponents = [];
     let currentChain = chain;
 
-    console.log("currentChain", currentChain);
+    // console.log("currentChain", currentChain);
 
     while (currentChain) {
       const speciesName = currentChain.species.name;
@@ -53,6 +55,8 @@ const PokePage = () => {
           key={speciesName}
         >
           <Image
+            onClick={() => router.push(`/${speciesName}`)}
+            priority={true}
             className={PokePageStyle.EvolutionImage}
             src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
               currentChain.species.url.split("/").slice(-2, -1)[0]
@@ -61,9 +65,12 @@ const PokePage = () => {
             width={150}
             height={150}
           />
+          {currentChain.evolves_to.length > 0 && (
+            <RiArrowRightWideLine size={60} color="white" />
+          )}
           <div>
             <p>{speciesName}</p>
-            <p>{`Nr. 000${speciesID}`}</p>
+            <p>{`# ${speciesID.toString().padStart(4, "0")}`}</p>
             <h4 style={{ backgroundColor: typeColors[mainType] }}>
               {mainType}
             </h4>
@@ -97,6 +104,7 @@ const PokePage = () => {
             </div>
             <div className={PokePageStyle.PokeImage}>
               <Image
+                priority={true}
                 src={pokeData.images.front_default}
                 alt={pokeData.name}
                 width={350}

@@ -3,4 +3,8 @@
   padding: 20px;
   margin: 20px;
   border-bottom: 0.5px solid rgba(200, 200, 200, 0.322);
+
+  @media screen and (max-width: 600px) {
+    justify-content: center;
+  }
 }

@@ -6,6 +6,7 @@ import PokeHomeCardStyle from "./PokeCard.module.scss";
 import { useRouter } from "next/navigation";
 import { Pokemon } from "@/types/types";
 import { typeColors } from "@/lib/data";
+import Link from "next/link";
 
 interface PokeCardClientProps {
   pokeData: Pokemon[];
@@ -27,6 +28,7 @@ const PokeCardClient: React.FC<PokeCardClientProps> = ({ pokeData }) => {
           <div key={id}>
             <div className={PokeHomeCardStyle.Image}>
               <Image
+                priority={true}
                 src={data.images?.front_default}
                 alt="poke-image"
                 height={250}

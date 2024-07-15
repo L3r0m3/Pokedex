@@ -6,8 +6,8 @@ import Header from "@/components/Header/Header";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Pokedex",
-  description: "Whats Your Favorite Pokemon?",
+  title: "Pokédex",
+  description: "Whats Your Favorite Pokémon?",
 };
 
 export default function RootLayout({

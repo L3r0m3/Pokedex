@@ -1,12 +1,25 @@
 import api from "../lib/api";
 import { EvolutionChain, Pokemon } from "../types/types";
 
+export async function LoadAllPokemons() {
+  const pokeList = await api.get(`/pokemon?limit=100000&offset=0`);
+  const allSummeries = pokeList.data.results.map((pokemon) => ({
+    name: pokemon.name,
+    url: pokemon.url,
+  }));
+
+  // console.log(pokeList);
+
+  return { allSummeries, count: pokeList.data.count };
+}
+
 export async function LoadPokemons(limit: number, offset: number) {
   const pokeList = await api.get(`/pokemon?limit=${limit}&offset=${offset}`);
-
   let all = [];
 
-  const count = pokeList.data.count;
+  console.log(pokeList);
+
+  // const count = pokeList.data.count;
 
   for (let i = 0; i < pokeList.data.results.length; i++) {
     let pokeDetails = await api.get(
@@ -29,7 +42,7 @@ export async function LoadPokemons(limit: number, offset: number) {
     };
     all.push(obj);
   }
-  return { all, count };
+  return { all };
 }
 
 export async function LoadPokemon(
