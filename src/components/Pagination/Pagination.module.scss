@@ -1,0 +1,17 @@
+.Container {
+  margin: 10px;
+  border: 1px solid rgba(203, 203, 203, 0.345);
+  border-radius: 5px;
+  max-width: 30%;
+  min-width: 30px;
+
+  .Button {
+    cursor: pointer;
+    background-color: #32a7d7;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 5px;
+  }
+}

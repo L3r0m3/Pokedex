@@ -14,8 +14,6 @@ const PokePage = () => {
     null
   );
 
-  // console.log("evolution", evolutionChain);
-
   useEffect(() => {
     const fetchPokemon = async () => {
       try {
@@ -83,7 +81,6 @@ const PokePage = () => {
   };
 
   const mainType = pokeData.types;
-  console.log(mainType);
 
   return (
     <>

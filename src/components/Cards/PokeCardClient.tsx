@@ -14,28 +14,32 @@ interface PokeCardClientProps {
 const PokeCardClient: React.FC<PokeCardClientProps> = ({ pokeData }) => {
   const router = useRouter();
 
-  const mainType = pokeData.map((data) => data.types[0].type.name);
-
   return (
     <div className={PokeHomeCardStyle.CardContainer}>
-      {pokeData.map((data, id) => (
-        <div key={id}>
-          <div className={PokeHomeCardStyle.Image}>
-            <Image
-              src={data.images.front_default}
-              alt="poke-image"
-              height={250}
-              width={250}
-              onClick={() => router.push(`/${data.name}`)}
-            />
+      {pokeData.map((data, id) => {
+        const mainType =
+          data.types && data.types.length > 0
+            ? data.types[0].type.name
+            : "normal";
+        const bgColor = mainType ? typeColors[mainType] : "#FFFFFF";
+
+        return (
+          <div key={id}>
+            <div className={PokeHomeCardStyle.Image}>
+              <Image
+                src={data.images?.front_default}
+                alt="poke-image"
+                height={250}
+                width={250}
+                onClick={() => router.push(`/${data.name}`)}
+              />
+            </div>
+            <h5>{`# ${data.number}`}</h5>
+            <h4>{data.name}</h4>
+            <h6 style={{ backgroundColor: bgColor }}>{mainType}</h6>
           </div>
-          <h5>{`Nr. ${data.number}`}</h5>
-          <h4>{data.name}</h4>
-          <h6 style={{ backgroundColor: typeColors[mainType] }}>
-            {data.types[0].type.name}
-          </h6>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 };

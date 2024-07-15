@@ -16,11 +16,11 @@ const PokeCardServer = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
-  const pokemonsPerPage = 12;
+  const pokemonsPerPage = 24;
 
   const handleSearchChange = (query: string) => {
     setSearchQuery(query);
-    setCurrentPage(1);
+    // setCurrentPage(1);
   };
 
   const handlePagination = (pageNumber: number) => {
@@ -58,12 +58,7 @@ const PokeCardServer = () => {
         ) : null}
       </div>
       <div className={PokeCardStyle.CardClientContainer}>
-        <PokeCardClient
-          pokeData={filteredPokemons.slice(
-            (currentPage - 1) * pokemonsPerPage,
-            currentPage * pokemonsPerPage
-          )}
-        />
+        <PokeCardClient pokeData={filteredPokemons} />
         <Pagination
           pokemonsPerPage={pokemonsPerPage}
           totalPokemons={totalCount}

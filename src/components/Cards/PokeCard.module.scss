@@ -1,30 +1,43 @@
 .CardContainer {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  justify-content: center;
+  gap: 1.2rem;
+  min-width: auto;
+  padding: 20px 0px;
+
+  @media screen and (min-width: 300px) {
     display: grid;
+    min-width: auto;
+    grid-template-columns: auto;
+  }
+  @media screen and (min-width: 600px) {
+    // display: grid;
     grid-template-columns: auto auto auto auto;
-    justify-content: center;
-    gap: 1.2rem;
-    padding: 20px 0px;
+  }
 
-    .Image {
-        background-color: #F2F2F2;
-        border-radius: 15px;
-        width: 10vw;
-        cursor: pointer;
-    }
+  .Image {
+    background-color: #f2f2f2;
+    border-radius: 10px;
+    min-width: auto;
+    cursor: pointer;
+  }
 
-    h5 {
-        font-family: Arial, Helvetica, sans-serif sans-serif;
-        padding: 5px;
-        color: gray;
-    }
+  h5 {
+    font-family: Arial, Helvetica, sans-serif sans-serif;
+    padding: 5px;
+    color: gray;
+  }
 
-    h4 {
-        color: black 800;
-        padding: 5px;
-    }
-    
-    h6 {
-        padding: 5px;
-    }
-    
+  h4 {
+    color: black 800;
+    padding: 5px;
+  }
+
+  h6 {
+    color: white;
+    width: 80px;
+    padding: 5px;
+    border-radius: 15px;
+  }
 }

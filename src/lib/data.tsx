@@ -1,7 +1,7 @@
 import api from "../lib/api";
-import { EvolutionChain, Pokemon, Pokemons } from "../types/types";
+import { EvolutionChain, Pokemon } from "../types/types";
 
-export async function LoadPokemons(limit, offset) {
+export async function LoadPokemons(limit: number, offset: number) {
   const pokeList = await api.get(`/pokemon?limit=${limit}&offset=${offset}`);
 
   let all = [];

@@ -1,24 +1,25 @@
 .CardClientContainer {
+  display: grid;
+  justify-items: center;
+
+  div {
+    text-align: center;
+  }
+
+  .Pagination {
+    margin-left: 35%;
     display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto auto;
 
-    div {
-        text-align: center;
+    button {
+      margin: 5px;
+      padding: 5px;
+      margin-left: 5px;
+      background-color: #1b82b1;
+      color: white;
+      border-radius: 5px;
+      border: none;
     }
-
-    .Pagination {
-        margin-left: 35%;
-        display: grid;
-        grid-template-columns: auto;
-        grid-template-rows: auto auto;
-
-        button{
-            margin: 5px;
-            padding: 5px;
-            margin-left: 5px;
-            background-color: #1B82B1;
-            color: white;
-            border-radius: 5px;
-            border: none;
-        }
-    }
+  }
 }

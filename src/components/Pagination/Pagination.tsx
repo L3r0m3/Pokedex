@@ -1,4 +1,5 @@
 import React from "react";
+import PaginationStyle from "./Pagination.module.scss";
 
 interface PaginationProps {
   currentPage: number;
@@ -20,7 +21,11 @@ const Pagination: React.FC<PaginationProps> = ({
 
     if (currentPage > 1) {
       buttons.push(
-        <button key="prev" onClick={() => handlePagination(currentPage - 1)}>
+        <button
+          className={PaginationStyle.Button}
+          key="prev"
+          onClick={() => handlePagination(currentPage - 1)}
+        >
           Prev
         </button>
       );
@@ -28,7 +33,11 @@ const Pagination: React.FC<PaginationProps> = ({
 
     if (currentPage > 2) {
       buttons.push(
-        <button key={1} onClick={() => handlePagination(1)}>
+        <button
+          className={PaginationStyle.Button}
+          key={1}
+          onClick={() => handlePagination(1)}
+        >
           1
         </button>
       );
@@ -41,6 +50,7 @@ const Pagination: React.FC<PaginationProps> = ({
     if (currentPage > 1) {
       buttons.push(
         <button
+          className={PaginationStyle.Button}
           key={currentPage - 1}
           onClick={() => handlePagination(currentPage - 1)}
         >
@@ -50,7 +60,7 @@ const Pagination: React.FC<PaginationProps> = ({
     }
 
     buttons.push(
-      <button key={currentPage} disabled>
+      <button className={PaginationStyle.Button} key={currentPage} disabled>
         {currentPage}
       </button>
     );
@@ -58,6 +68,7 @@ const Pagination: React.FC<PaginationProps> = ({
     if (currentPage < totalPages) {
       buttons.push(
         <button
+          className={PaginationStyle.Button}
           key={currentPage + 1}
           onClick={() => handlePagination(currentPage + 1)}
         >
@@ -72,7 +83,11 @@ const Pagination: React.FC<PaginationProps> = ({
       }
 
       buttons.push(
-        <button key={totalPages} onClick={() => handlePagination(totalPages)}>
+        <button
+          className={PaginationStyle.Button}
+          key={totalPages}
+          onClick={() => handlePagination(totalPages)}
+        >
           {totalPages}
         </button>
       );
@@ -80,7 +95,11 @@ const Pagination: React.FC<PaginationProps> = ({
 
     if (currentPage < totalPages) {
       buttons.push(
-        <button key="next" onClick={() => handlePagination(currentPage + 1)}>
+        <button
+          className={PaginationStyle.Button}
+          key="next"
+          onClick={() => handlePagination(currentPage + 1)}
+        >
           Next
         </button>
       );
@@ -89,7 +108,9 @@ const Pagination: React.FC<PaginationProps> = ({
     return buttons;
   };
 
-  return <div>{getPaginationButtons()}</div>;
+  return (
+    <div className={PaginationStyle.Container}>{getPaginationButtons()}</div>
+  );
 };
 
 export default Pagination;

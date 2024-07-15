@@ -1,17 +1,25 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
-import Logo from "../../../public/PokedeX.png";
+import Logo from "../../../public/pokedex_logo.png";
 import HeaderStyle from "./Header.module.scss";
-import SearchBar from "../SearchBar/SearchBar";
+import { useRouter } from "next/navigation";
 
 const Header = () => {
+  const router = useRouter();
+
   return (
     <div className={HeaderStyle.HeaderContainer}>
       <div>
-        <Image src={Logo} alt="logo" height={100} width={100} />
-      </div>
-      <div>
-        <Image src={Logo} alt="logo" height={100} width={100} />
+        <Image
+          style={{ cursor: "pointer" }}
+          onClick={() => router.push("/")}
+          src={Logo}
+          alt="logo"
+          height={50}
+          width={150}
+        />
       </div>
     </div>
   );
