@@ -16,7 +16,7 @@ const Header = () => {
 
   return (
     <div className={HeaderStyle.HeaderContainer}>
-      {/* <div>
+      <div>
         <Image
           priority
           style={{ cursor: "pointer" }}
@@ -35,7 +35,7 @@ const Header = () => {
         {searchQuery && (
           <SearchResultsList filteredPokemons={filteredPokemons} />
         )}
-      </div> */}
+      </div>
     </div>
   );
 };

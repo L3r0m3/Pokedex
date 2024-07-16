@@ -15,7 +15,7 @@ import { EvolutionChain, Pokemon } from "../types/types";
 // }
 
 export async function LoadAllPokemons() {
-  const pokeList = await api.get(`/pokemon`);
+  const pokeList = await api.get(`/pokemon?limit=10000&offset=0`);
   const allSummeries = pokeList.data.results.map((pokemon) => ({
     name: pokemon.name,
     url: pokemon.url,
