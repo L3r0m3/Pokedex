@@ -1,6 +1,5 @@
 import react from "react";
-import PokeCardServer from "./server/PokeCardServer";
-import Header from "../components/Header/Header";
+import PokeCardServer from "../components/Cards/PokeCardServer";
 
 const PokeHome: react.FC = () => {
   return (

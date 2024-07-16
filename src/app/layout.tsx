@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import RootStyling from "./globals.module.scss";
 import Header from "@/components/Header/Header";
+import { SearchProvider } from "@/context/SearchContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,10 +17,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html className={RootStyling.Container} lang="en">
+    <html lang="en">
       <body className={inter.className}>
-        <Header />
-        {children}
+        <SearchProvider>
+          <Header />
+          <main className={RootStyling.Container}>{children}</main>
+        </SearchProvider>
       </body>
     </html>
   );

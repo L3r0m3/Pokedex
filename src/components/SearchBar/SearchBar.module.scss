@@ -8,6 +8,8 @@
   background-color: white;
   display: flex;
   align-items: center;
+  z-index: 4;
+  position: absolute;
   input {
     background-color: transparent;
     border: none;

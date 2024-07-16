@@ -6,8 +6,6 @@ import PokeHomeCardStyle from "./PokeCard.module.scss";
 import { useRouter } from "next/navigation";
 import { Pokemon } from "@/types/types";
 import { typeColors } from "@/lib/data";
-import Link from "next/link";
-
 interface PokeCardClientProps {
   pokeData: Pokemon[];
 }

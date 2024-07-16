@@ -151,6 +151,9 @@ const PokePage = () => {
             {evolutionChain && renderEvolutionChain(evolutionChain.chain)}
           </div>
         </div>
+        <button onClick={() => router.push("/")}>
+          <h3>Explore more Pokémons</h3>
+        </button>
       </div>
     </>
   );
