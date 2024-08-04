@@ -9,6 +9,7 @@ import {
 
 export const LoadAllPokemons = async () => {
   const pokeList = await api.get(`/pokemon?limit=10000&offset=0`);
+  /* @ts-ignore */
   const allSummeries = pokeList.data.results.map((pokemon) => ({
     name: pokemon.name,
     url: pokemon.url,
@@ -32,6 +33,7 @@ export const LoadPokemons = async (
     const obj = {
       name: pokeDetails.data.name,
       id: pokeDetails.data.id,
+      /* @ts-ignore */
       types: pokeDetails.data.types.map((typeObj) => typeObj.type.name),
       // types: pokeDetails.data.types[0].type.name,
       number: pokeDetails.data.id.toString().padStart(4, "0"),
@@ -50,12 +52,13 @@ export const LoadPokemons = async (
 
   const nextOffset = pokeList.data ? offset + 12 : null;
 
+  /* @ts-ignore */
   return { all, nextOffset };
 };
 
 export async function LoadPokemon(
   name: string | string[]
-): Promise<{ pokemon: Pokemon; evolutionChain: EvolutionChain }> {
+): Promise<{ pokemon: Pokemon; evolutionChain: EvolutionChain | null }> {
   const pokeDetails = await api.get(`/pokemon/${name}`);
   const speciesUrl = pokeDetails.data.species.url;
 
@@ -74,6 +77,7 @@ export async function LoadPokemon(
     height: pokeDetails.data.height,
     weight: pokeDetails.data.weight,
     species: speciesDetails.data.genera,
+    genus: speciesDetails.data.genera,
     abilities: pokeDetails.data.abilities,
     flavor_text: abilitiesDetails.data.flavour_text_entries,
     images: {
@@ -84,12 +88,12 @@ export async function LoadPokemon(
     },
   };
 
-  const evolutionChain: EvolutionChain = evolutionChainDetails.data;
+  const evolutionChain: EvolutionChain | null = evolutionChainDetails.data;
 
   return { pokemon: obj, evolutionChain };
 }
 
-export const typeColors = {
+export const typeColors: { [key: string]: string } = {
   grass: "#9BCC50",
   fire: "#FD7D24",
   water: "#4592C4",

@@ -1,6 +1,10 @@
+import { typeColors } from "@/lib/data";
+
 export interface Pokemon {
-  name: string | string[];
-  genus: string;
+  name: string;
+  genus: {
+    genus: string | string[];
+  };
   id: number;
   types: any;
   number: string;
@@ -62,3 +66,5 @@ export interface PaginatedPokemonResponse {
   types: any;
   nextOffset: number | null;
 }
+
+export type PokemonType = keyof typeof typeColors;

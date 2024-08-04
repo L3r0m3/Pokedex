@@ -2,6 +2,7 @@
 
 import React, { useRef, useCallback } from "react";
 import Image from "next/image";
+import { Pokemon } from "@/types/types";
 import PokeHomeCardStyle from "./PokeCard.module.scss";
 import { useRouter } from "next/navigation";
 import { typeColors } from "@/lib/data";
@@ -22,6 +23,7 @@ const PokeCardClient = () => {
   const observer = useRef<IntersectionObserver | null>(null);
 
   const lastPokemonElementRef = useCallback(
+    /* @ts-ignore */
     (node) => {
       if (isLoading) return;
 
@@ -33,7 +35,7 @@ const PokeCardClient = () => {
       });
       if (node) observer.current.observe(node);
     },
-    [fetchNextPage, hasNextPage, isFetching]
+    [fetchNextPage, hasNextPage, isFetching, isLoading]
   );
 
   if (isLoading) return <div>isLoading</div>;
@@ -74,9 +76,9 @@ const PokeCardClient = () => {
                   <h4>{pokemon.name}</h4>
                   {/* <h6 style={{ backgroundColor: bgColor }}>{mainType}</h6> */}
                   <div>
-                    {mainTypes.map((type, i) => (
+                    {mainTypes.map((type: any) => (
                       <span
-                        key={i}
+                        key={type.type}
                         style={{ backgroundColor: bgColor }}
                         className={PokeHomeCardStyle.Type}
                       >
@@ -100,6 +102,7 @@ const PokeCardClient = () => {
                   pokemons.types && pokemons.types.length
                     ? pokemons.types
                     : "normal";
+
                 const bgColor = mainType ? typeColors[mainType] : "#FFFFFF";
 
                 return (

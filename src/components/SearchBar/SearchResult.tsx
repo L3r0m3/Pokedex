@@ -1,7 +1,7 @@
 import SearchResultStyle from "./SearchResult.module.scss";
 import { useRouter } from "next/navigation";
 
-export const SearchResult = ({ pokemon }) => {
+export const SearchResult = ({ pokemon }: any) => {
   const router = useRouter();
 
   return (

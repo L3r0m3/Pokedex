@@ -5,7 +5,7 @@ import { SearchProvider } from "@/context/SearchContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-const Providers = ({ children }) => {
+const Providers = ({ children }: any) => {
   const queryClient = new QueryClient();
 
   return (

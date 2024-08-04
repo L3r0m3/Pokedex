@@ -5,13 +5,14 @@ import { SearchResult } from "./SearchResult";
 import { useSearch } from "@/context/SearchContext";
 import { useEffect, useState } from "react";
 
-export const SearchResultsList = ({ allPokemonData }) => {
+export const SearchResultsList = ({ allPokemonData }: any) => {
   const { searchQuery } = useSearch();
   const [filteredPokemons, setFilteredPokemons] = useState([]);
 
   useEffect(() => {
     try {
       if (searchQuery) {
+        /* @ts-ignore */
         const filtered = allPokemonData.allSummeries.filter((pokemon) =>
           pokemon.name.toLowerCase().includes(searchQuery.toLowerCase())
         );

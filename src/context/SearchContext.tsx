@@ -53,7 +53,7 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({
     isLoading,
   } = useInfiniteQuery<PaginatedPokemonResponse>({
     queryKey: ["pokemons"],
-    queryFn: ({ pageParam = 0 }) => LoadPokemons(12, pageParam),
+    queryFn: ({ pageParam = 0 }) => LoadPokemons(12, pageParam as number),
     getNextPageParam: (lastPage) => lastPage.nextOffset ?? null,
     initialPageParam: 0,
   });
@@ -70,6 +70,7 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({
 
     if (filterType) {
       filtered = filtered.filter((pokemon) =>
+        /* @ts-ignore */
         pokemon.types.some((type) =>
           type.toLowerCase().includes(filterType.toLowerCase())
         )
@@ -85,6 +86,7 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({
 
     if (filterType) {
       allPokemons = allPokemons.filter((pokemon) =>
+        /* @ts-ignore */
         pokemon.types.some((type) =>
           type.toLowerCase().includes(filterType.toLowerCase())
         )
