@@ -1,18 +1,23 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useMemo } from "react";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { LoadPokemons, LoadAllPokemons } from "@/lib/data";
-import { Pokemon } from "@/types/types";
+import { Pokemon, PaginatedPokemonResponse } from "@/types/types";
 
 interface SearchContextProps {
   searchQuery: string;
   handleSearchChange: (query: string) => void;
   filteredPokemons: Pokemon[];
-  currentPage: number;
-  handlePagination: (pageNumber: number) => void;
-  count: number;
-  pokemonsPerPage: number;
-  pokemons: Pokemon[];
+  allPokemonData: any;
+  filterType: string;
+  setFilterType: (type: string) => void;
+  setSearchQuery: any;
+  hasNextPage: boolean;
+  fetchNextPage: () => void;
+  paginatedPokemons: Pokemon[];
+  isFetching: boolean;
+  isLoading: boolean;
 }
 
 const SearchContext = createContext<SearchContextProps | undefined>(undefined);
@@ -28,65 +33,82 @@ export const useSearch = () => {
 export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
-  const [allPokemonSummeries, setAllPokemonSummeries] = useState<Pokemon[]>([]);
-  const [filteredPokemons, setFilteredPokemons] = useState<Pokemon[]>([]);
+  const [filterType, setFilterType] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [count, setCount] = useState(0);
-  const pokemonsPerPage = 12;
 
   const handleSearchChange = (query: string) => {
     setSearchQuery(query);
-    setCurrentPage(1);
   };
 
-  const handlePagination = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
-  };
+  const { data: allPokemonData, isSuccess: isSummariesLoaded } = useQuery({
+    queryKey: ["allPokemons"],
+    queryFn: LoadAllPokemons,
+  });
 
-  //   console.log(LoadAllPokemons());
+  const {
+    data: paginatedPokemonData,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isLoading,
+  } = useInfiniteQuery<PaginatedPokemonResponse>({
+    queryKey: ["pokemons"],
+    queryFn: ({ pageParam = 0 }) => LoadPokemons(12, pageParam),
+    getNextPageParam: (lastPage) => lastPage.nextOffset ?? null,
+    initialPageParam: 0,
+  });
 
-  useEffect(() => {
-    const fetchSummeries = async () => {
-      const { allSummeries, count } = await LoadAllPokemons();
-      setAllPokemonSummeries(allSummeries);
-      setCount(count);
-    };
+  const filteredPokemons = useMemo(() => {
+    if (!paginatedPokemonData || !paginatedPokemonData.pages[0].all) return [];
+    let filtered = paginatedPokemonData.pages.flatMap((page) => page.all);
 
-    fetchSummeries();
-  }, []);
+    if (searchQuery) {
+      filtered = filtered?.filter((pokemon) =>
+        pokemon.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const offset = (currentPage - 1) * pokemonsPerPage;
-      const { all } = await LoadPokemons(pokemonsPerPage, offset);
-      //   setCount(count);
-      setPokemons(all);
-      setFilteredPokemons(all);
-    };
+    if (filterType) {
+      filtered = filtered.filter((pokemon) =>
+        pokemon.types.some((type) =>
+          type.toLowerCase().includes(filterType.toLowerCase())
+        )
+      );
+    }
 
-    fetchData();
-  }, [currentPage]);
+    return filtered;
+  }, [searchQuery, filterType, paginatedPokemonData]);
 
-  useEffect(() => {
-    const filtered = allPokemonSummeries.filter((pokemon) =>
-      pokemon.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setFilteredPokemons(filtered);
-  }, [searchQuery, allPokemonSummeries]);
+  const paginatedPokemons = useMemo(() => {
+    if (!paginatedPokemonData || !paginatedPokemonData.pages) return [];
+    let allPokemons = paginatedPokemonData.pages.flatMap((page) => page.all);
+
+    if (filterType) {
+      allPokemons = allPokemons.filter((pokemon) =>
+        pokemon.types.some((type) =>
+          type.toLowerCase().includes(filterType.toLowerCase())
+        )
+      );
+    }
+
+    return allPokemons;
+  }, [paginatedPokemonData, filterType]);
 
   return (
     <SearchContext.Provider
       value={{
         searchQuery,
         handleSearchChange,
+        setSearchQuery,
+        filterType,
+        setFilterType,
+        allPokemonData,
         filteredPokemons,
-        currentPage,
-        handlePagination,
-        count,
-        pokemonsPerPage,
-        pokemons,
+        fetchNextPage,
+        hasNextPage,
+        paginatedPokemons,
+        isFetching,
+        isLoading,
       }}
     >
       {children}

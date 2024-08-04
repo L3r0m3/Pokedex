@@ -1,36 +1,28 @@
 import api from "../lib/api";
-import { EvolutionChain, Pokemon } from "../types/types";
+import {
+  EvolutionChain,
+  Pokemon,
+  Pokemons,
+  AllPokemonResponse,
+  PaginatedPokemonResponse,
+} from "../types/types";
 
-// export async function fetchMW(path: string) {
-//   const baseURL = "https://pokeapi.co/api/v2";
-
-//   return fetch(baseURL + path).then((res) => res.json());
-// }
-
-// export async function LoadAllPokemons() {
-//   const url = `/pokemon?limit=1000&offset=0`;
-//   const pokeList = await fetchMW(url);
-
-//   return { pokeList };
-// }
-
-export async function LoadAllPokemons() {
+export const LoadAllPokemons = async () => {
   const pokeList = await api.get(`/pokemon?limit=10000&offset=0`);
   const allSummeries = pokeList.data.results.map((pokemon) => ({
     name: pokemon.name,
     url: pokemon.url,
   }));
 
-  // console.log(pokeList);
-
   return { allSummeries, count: pokeList.data.count };
-}
+};
 
-export async function LoadPokemons(limit: number, offset: number) {
+export const LoadPokemons = async (
+  limit: number,
+  offset: number
+): Promise<PaginatedPokemonResponse> => {
   const pokeList = await api.get(`/pokemon?limit=${limit}&offset=${offset}`);
   let all = [];
-
-  // const count = pokeList.data.count;
 
   for (let i = 0; i < pokeList.data.results.length; i++) {
     let pokeDetails = await api.get(
@@ -40,7 +32,8 @@ export async function LoadPokemons(limit: number, offset: number) {
     const obj = {
       name: pokeDetails.data.name,
       id: pokeDetails.data.id,
-      types: pokeDetails.data.types,
+      types: pokeDetails.data.types.map((typeObj) => typeObj.type.name),
+      // types: pokeDetails.data.types[0].type.name,
       number: pokeDetails.data.id.toString().padStart(4, "0"),
       height: pokeDetails.data.height,
       abilities: pokeDetails.data.abilities,
@@ -51,10 +44,19 @@ export async function LoadPokemons(limit: number, offset: number) {
         back_shiny: pokeDetails.data.sprites.back_shiny,
       },
     };
+
+    for (let x in obj.types) {
+      const test = obj.types[x];
+      console.log("sfwefwe", test);
+    }
+
     all.push(obj);
   }
-  return { all };
-}
+
+  const nextOffset = pokeList.data ? offset + 12 : null;
+
+  return { all, nextOffset };
+};
 
 export async function LoadPokemon(
   name: string

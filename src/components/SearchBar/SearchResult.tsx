@@ -1,16 +1,16 @@
 import SearchResultStyle from "./SearchResult.module.scss";
 import { useRouter } from "next/navigation";
 
-export const SearchResult = ({ filteredPokemons }) => {
+export const SearchResult = ({ pokemon }) => {
   const router = useRouter();
 
   return (
     <>
       <div
-        onClick={() => router.push(`/${filteredPokemons}`)}
+        onClick={() => router.push(`/${pokemon.name}`)}
         className={SearchResultStyle.Result}
       >
-        {filteredPokemons}
+        {pokemon.name}
       </div>
     </>
   );

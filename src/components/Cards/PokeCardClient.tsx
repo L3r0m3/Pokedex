@@ -1,51 +1,131 @@
 "use client";
 
-import PropTypes from "prop-types";
+import React, { useRef, useCallback } from "react";
 import Image from "next/image";
 import PokeHomeCardStyle from "./PokeCard.module.scss";
 import { useRouter } from "next/navigation";
-import { Pokemon } from "@/types/types";
 import { typeColors } from "@/lib/data";
-interface PokeCardClientProps {
-  pokeData: Pokemon[];
-}
+import { useSearch } from "@/context/SearchContext";
 
-const PokeCardClient: React.FC<PokeCardClientProps> = ({ pokeData }) => {
+const PokeCardClient = () => {
   const router = useRouter();
+  const {
+    filterType,
+    filteredPokemons,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isLoading,
+    paginatedPokemons,
+  } = useSearch();
+
+  const observer = useRef<IntersectionObserver | null>(null);
+
+  const lastPokemonElementRef = useCallback(
+    (node) => {
+      if (isLoading) return;
+
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasNextPage && !isFetching) {
+          fetchNextPage();
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    [fetchNextPage, hasNextPage]
+  );
+
+  if (isLoading) return <div>isLoading</div>;
 
   return (
-    <div className={PokeHomeCardStyle.CardContainer}>
-      {pokeData.map((data, id) => {
-        const mainType =
-          data.types && data.types.length > 0
-            ? data.types[0].type.name
-            : "normal";
-        const bgColor = mainType ? typeColors[mainType] : "#FFFFFF";
+    <div>
+      <>
+        {paginatedPokemons && !filterType && (
+          <div className={PokeHomeCardStyle.CardContainer}>
+            {paginatedPokemons.map((pokemon, index) => {
+              const mainTypes = pokemon.types;
+              const bgColor =
+                mainTypes.length > 0 ? typeColors[mainTypes[0]] : "#FFFFFF";
 
-        return (
-          <div key={id}>
-            <div className={PokeHomeCardStyle.Image}>
-              <Image
-                priority={true}
-                src={data.images?.front_default}
-                alt="poke-image"
-                height={250}
-                width={250}
-                onClick={() => router.push(`/${data.name}`)}
-              />
-            </div>
-            <h5>{`# ${data.number}`}</h5>
-            <h4>{data.name}</h4>
-            <h6 style={{ backgroundColor: bgColor }}>{mainType}</h6>
+              return (
+                <div
+                  key={pokemon.name}
+                  ref={
+                    index !== filteredPokemons.length - 1
+                      ? lastPokemonElementRef
+                      : null
+                  }
+                >
+                  <div
+                    className={PokeHomeCardStyle.Image}
+                    style={{ backgroundColor: bgColor }}
+                  >
+                    <Image
+                      priority={true}
+                      src={pokemon.images?.front_default}
+                      alt="poke-image"
+                      height={200}
+                      width={200}
+                      onClick={() => router.push(`/${pokemon.name}`)}
+                    />
+                  </div>
+                  <h5>{`# ${pokemon.number}`}</h5>
+                  <h4>{pokemon.name}</h4>
+                  {/* <h6 style={{ backgroundColor: bgColor }}>{mainType}</h6> */}
+                  <div>
+                    {mainTypes.map((type, i) => (
+                      <span
+                        key={i}
+                        style={{ backgroundColor: bgColor }}
+                        className={PokeHomeCardStyle.Type}
+                      >
+                        {type}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
           </div>
-        );
-      })}
+        )}
+        {isFetching && <div>isFetching</div>}
+      </>
+      <div>
+        <>
+          {filterType && filteredPokemons && (
+            <div className={PokeHomeCardStyle.CardContainer}>
+              {paginatedPokemons.map((pokemons, id) => {
+                const mainType =
+                  pokemons.types && pokemons.types.length
+                    ? pokemons.types
+                    : "normal";
+                const bgColor = mainType ? typeColors[mainType] : "#FFFFFF";
+
+                return (
+                  <div key={id}>
+                    <div className={PokeHomeCardStyle.Image}>
+                      <Image
+                        priority={true}
+                        src={pokemons.images?.front_default}
+                        alt="poke-image"
+                        height={200}
+                        width={200}
+                        onClick={() => router.push(`/${pokemons.name}`)}
+                      />
+                    </div>
+                    <h5>{`# ${pokemons.number}`}</h5>
+                    <h4>{pokemons.name}</h4>
+                    <h6 style={{ backgroundColor: bgColor }}>{mainType}</h6>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </>
+      </div>
     </div>
   );
-};
-
-PokeCardClient.propTypes = {
-  pokeData: PropTypes.array.isRequired,
 };
 
 export default PokeCardClient;

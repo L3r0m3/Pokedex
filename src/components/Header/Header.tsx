@@ -9,10 +9,11 @@ import { useSearch } from "@/context/SearchContext";
 import SearchBarStyle from "../SearchBar/SearchBar.module.scss";
 import SearchBar from "../SearchBar/SearchBar";
 import { SearchResultsList } from "../SearchBar/SearchResultsList";
+import FilterType from "../FilterType/FilterType";
 
 const Header = () => {
   const router = useRouter();
-  const { searchQuery, handleSearchChange, filteredPokemons } = useSearch();
+  const { searchQuery, handleSearchChange, allPokemonData } = useSearch();
 
   return (
     <div className={HeaderStyle.HeaderContainer}>
@@ -27,14 +28,15 @@ const Header = () => {
           width={150}
         />
       </div>
+      <div>
+        <FilterType />
+      </div>
       <div className={SearchBarStyle.SearchBarWrapper}>
         <SearchBar
           searchQuery={searchQuery}
           onSearchChange={handleSearchChange}
         />
-        {searchQuery && (
-          <SearchResultsList filteredPokemons={filteredPokemons} />
-        )}
+        {searchQuery && <SearchResultsList allPokemonData={allPokemonData} />}
       </div>
     </div>
   );

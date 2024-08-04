@@ -1,12 +1,11 @@
-import react from "react";
-import PokeCardServer from "../components/Cards/PokeCardServer";
+"use client";
+import React from "react";
+import PokeCardClient from "@/components/Cards/PokeCardClient";
 
-const PokeHome: react.FC = () => {
+const PokeHome: React.FC = () => {
   return (
     <>
-      <div>
-        <PokeCardServer />
-      </div>
+      <PokeCardClient />
     </>
   );
 };

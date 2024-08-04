@@ -6,6 +6,7 @@
   min-width: auto;
   padding: 20px 0px;
   z-index: 0;
+  background-color: rgba(187, 141, 82, 0.593);
 
   @media screen and (min-width: 300px) {
     display: grid;
@@ -41,4 +42,12 @@
     padding: 5px;
     border-radius: 15px;
   }
+}
+
+.Type {
+  display: inline-block;
+  margin: 4px;
+  padding: 4px 8px;
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.2);
 }

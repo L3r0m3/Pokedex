@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import RootStyling from "./globals.module.scss";
 import Header from "@/components/Header/Header";
-import { SearchProvider } from "@/context/SearchContext";
+import Providers from "@/providers/Providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,10 +19,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <SearchProvider>
+        <Providers>
           <Header />
           <main className={RootStyling.Container}>{children}</main>
-        </SearchProvider>
+        </Providers>
       </body>
     </html>
   );
