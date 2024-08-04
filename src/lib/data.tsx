@@ -45,11 +45,6 @@ export const LoadPokemons = async (
       },
     };
 
-    for (let x in obj.types) {
-      const test = obj.types[x];
-      console.log("sfwefwe", test);
-    }
-
     all.push(obj);
   }
 

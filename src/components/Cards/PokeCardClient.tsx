@@ -33,7 +33,7 @@ const PokeCardClient = () => {
       });
       if (node) observer.current.observe(node);
     },
-    [fetchNextPage, hasNextPage]
+    [fetchNextPage, hasNextPage, isFetching]
   );
 
   if (isLoading) return <div>isLoading</div>;
