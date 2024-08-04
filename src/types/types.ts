@@ -1,5 +1,5 @@
 export interface Pokemon {
-  name: string;
+  name: string | string[];
   genus: string;
   id: number;
   types: any;
@@ -36,7 +36,7 @@ export interface EvolutionChain {
   chain: {
     evolves_to: {
       species: {
-        name: string;
+        name: string | string[];
         url: string;
       };
       evolves_to: {

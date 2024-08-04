@@ -15,12 +15,8 @@ const PokePage = () => {
 
   useEffect(() => {
     const fetchPokemon = async () => {
-      try {
-        const { pokemon } = await LoadPokemon(name);
-        setPokeData(pokemon);
-      } catch (error) {
-        console.error("Error fetching Pokemon:", error);
-      }
+      const { pokemon } = await LoadPokemon(name);
+      setPokeData(pokemon);
     };
 
     if (name) {

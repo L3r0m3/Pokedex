@@ -59,7 +59,7 @@ export const LoadPokemons = async (
 };
 
 export async function LoadPokemon(
-  name: string
+  name: string | string[]
 ): Promise<{ pokemon: Pokemon; evolutionChain: EvolutionChain }> {
   const pokeDetails = await api.get(`/pokemon/${name}`);
   const speciesUrl = pokeDetails.data.species.url;
