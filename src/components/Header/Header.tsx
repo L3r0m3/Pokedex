@@ -19,6 +19,7 @@ const Header = () => {
     <div className={HeaderStyle.HeaderContainer}>
       <div>
         <Image
+          as="image"
           priority
           style={{ cursor: "pointer" }}
           onClick={() => router.push("/")}
@@ -35,6 +36,7 @@ const Header = () => {
         />
         {searchQuery && <SearchResultsList allPokemonData={allPokemonData} />}
         <div>
+          <h6>Filter by type:</h6>
           <FilterType />
         </div>
       </div>

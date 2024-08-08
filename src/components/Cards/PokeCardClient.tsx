@@ -2,7 +2,6 @@
 
 import React, { useRef, useCallback } from "react";
 import Image from "next/image";
-import { Pokemon } from "@/types/types";
 import PokeHomeCardStyle from "./PokeCard.module.scss";
 import { useRouter } from "next/navigation";
 import { typeColors } from "@/lib/data";
@@ -74,11 +73,10 @@ const PokeCardClient = () => {
                   </div>
                   <h5>{`# ${pokemon.number}`}</h5>
                   <h4>{pokemon.name}</h4>
-                  {/* <h6 style={{ backgroundColor: bgColor }}>{mainType}</h6> */}
-                  <div>
+                  <div key={pokemon.types}>
                     {mainTypes.map((type: any) => (
                       <span
-                        key={type.type}
+                        key={type.id}
                         style={{ backgroundColor: bgColor }}
                         className={PokeHomeCardStyle.Type}
                       >
@@ -97,7 +95,7 @@ const PokeCardClient = () => {
         <>
           {filterType && filteredPokemons && (
             <div className={PokeHomeCardStyle.CardContainer}>
-              {paginatedPokemons.map((pokemons, id) => {
+              {paginatedPokemons.map((pokemons, i) => {
                 const mainType =
                   pokemons.types && pokemons.types.length
                     ? pokemons.types
@@ -106,7 +104,7 @@ const PokeCardClient = () => {
                 const bgColor = mainType ? typeColors[mainType] : "#FFFFFF";
 
                 return (
-                  <div key={id}>
+                  <div key={pokemons.id}>
                     <div className={PokeHomeCardStyle.Image}>
                       <Image
                         priority={true}
