@@ -28,15 +28,15 @@ const Header = () => {
           width={150}
         />
       </div>
-      <div>
-        <FilterType />
-      </div>
       <div className={SearchBarStyle.SearchBarWrapper}>
         <SearchBar
           searchQuery={searchQuery}
           onSearchChange={handleSearchChange}
         />
         {searchQuery && <SearchResultsList allPokemonData={allPokemonData} />}
+        <div>
+          <FilterType />
+        </div>
       </div>
     </div>
   );
