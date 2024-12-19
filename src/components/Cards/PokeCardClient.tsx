@@ -6,6 +6,8 @@ import PokeHomeCardStyle from "./PokeCard.module.scss";
 import { useRouter } from "next/navigation";
 import { typeColors } from "@/lib/data";
 import { useSearch } from "@/context/SearchContext";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const PokeCardClient = () => {
   const router = useRouter();
@@ -37,7 +39,12 @@ const PokeCardClient = () => {
     [fetchNextPage, hasNextPage, isFetching, isLoading]
   );
 
-  if (isLoading) return <div>isLoading</div>;
+  if (isLoading)
+    return (
+      <div>
+        <Skeleton count={3} />
+      </div>
+    );
 
   return (
     <div>
@@ -63,7 +70,7 @@ const PokeCardClient = () => {
                     style={{ backgroundColor: bgColor }}
                   >
                     <Image
-                      priority={true}
+                      priority
                       src={pokemon.images?.front_default}
                       alt="poke-image"
                       height={200}
@@ -73,7 +80,7 @@ const PokeCardClient = () => {
                   </div>
                   <h5>{`# ${pokemon.number}`}</h5>
                   <h4>{pokemon.name}</h4>
-                  <div key={pokemon.types}>
+                  <div key={pokemon.id}>
                     {mainTypes.map((type: any) => (
                       <span
                         key={type.id}
@@ -89,7 +96,11 @@ const PokeCardClient = () => {
             })}
           </div>
         )}
-        {isFetching && <div>isFetching</div>}
+        {isFetching && (
+          <div className={PokeHomeCardStyle.CardContainer}>
+            <Skeleton count={4} wrapper={Box} />
+          </div>
+        )}
       </>
       <div>
         <>
@@ -125,6 +136,24 @@ const PokeCardClient = () => {
           )}
         </>
       </div>
+    </div>
+  );
+};
+
+const Box = ({ children }: any) => {
+  return (
+    <div
+      style={{
+        display: "inline-flex",
+        lineHeight: 2,
+        padding: "2rem",
+        marginBottom: "0.5rem",
+        width: 250,
+        height: 250,
+        minWidth: 100,
+      }}
+    >
+      {children}
     </div>
   );
 };

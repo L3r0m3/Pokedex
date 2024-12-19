@@ -14,7 +14,6 @@
     overflow-x: hidden;
   }
 
-
   body {
     color: rgb(var(--foreground-rgb));
     background: linear-gradient(
@@ -30,9 +29,9 @@
     text-decoration: none;
   }
 
-  @media (prefers-color-scheme: white) {
+  @media (prefers-color-scheme: "white") {
     html {
-      color-scheme: white;
+      color-scheme: "white";
     }
   }
 }
