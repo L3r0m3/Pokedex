@@ -4,16 +4,15 @@ import { LoadPokemon } from "@/lib/data";
 import { RiArrowRightWideLine } from "react-icons/ri";
 import { useRouter, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { EvolutionChain } from "@/types/types";
 
-// interface EvolutionChain {
-//   species: {
-//     name: string | string[];
-//     url: string;
-//   };
-//   evolves_to: EvolutionChain[];
-//   chain: EvolutionChain;
-// }
+interface EvolutionChain {
+  species: {
+    name: string;
+    url: string;
+  };
+  evolves_to: EvolutionChain[];
+  chain: EvolutionChain;
+}
 
 const EvolutionCard = () => {
   const [evolutionChain, setEvolutionChain] = useState<EvolutionChain | null>(
@@ -26,6 +25,7 @@ const EvolutionCard = () => {
     const fetchPokemon = async () => {
       try {
         const { evolutionChain } = await LoadPokemon(name);
+        /* @ts-expect-error: test123*/
         setEvolutionChain(evolutionChain);
       } catch (error) {
         console.error("Error fetching Pokemon:", error);
@@ -41,11 +41,9 @@ const EvolutionCard = () => {
     return <div>Loading...</div>;
   }
 
-  // const mainType = pokeData.types;
-
   const evolutionChainComponents: JSX.Element[] = [];
 
-  let currentChain: EvolutionChain | null = evolutionChain;
+  let currentChain: EvolutionChain | null = evolutionChain.chain;
 
   function extractSpeciesID(url: string): number | null {
     const match = url.match(/\/(\d+)\//);
@@ -53,8 +51,8 @@ const EvolutionCard = () => {
   }
 
   while (currentChain) {
-    const speciesName = currentChain.chain.species.name;
-    const speciesID = extractSpeciesID(currentChain.chain.species.url);
+    const speciesName = currentChain.species.name;
+    const speciesID = extractSpeciesID(currentChain.species.url);
 
     if (speciesID !== null) {
       evolutionChainComponents.push(
@@ -71,7 +69,7 @@ const EvolutionCard = () => {
             width={150}
             height={150}
           />
-          {currentChain.chain.evolves_to.length > 0 && (
+          {currentChain.evolves_to.length > 0 && (
             <RiArrowRightWideLine size={60} color="white" />
           )}
           <div>
@@ -82,8 +80,8 @@ const EvolutionCard = () => {
       );
     }
 
-    if (currentChain.chain.evolves_to.length > 0) {
-      currentChain = currentChain;
+    if (currentChain.evolves_to.length > 0) {
+      currentChain = currentChain.evolves_to[0];
     } else {
       currentChain = null;
     }
