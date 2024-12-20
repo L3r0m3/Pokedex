@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { LoadPokemon, typeColors } from "@/lib/data";
+import { LoadPokemon } from "@/lib/data";
 import { useParams, useRouter } from "next/navigation";
 import { Pokemon } from "@/types/types";
 import Image from "next/image";
 import PokePageStyle from "./PokePage.module.scss";
 import EvolutionCard from "@/components/Cards/EvolutionCard/EvolutionCard";
-import { PokemonType } from "@/types/types";
+// import { PokemonType } from "@/types/types";
 
 const PokePage = () => {
   const { name } = useParams();
@@ -29,7 +29,7 @@ const PokePage = () => {
     return <div>Loading...</div>;
   }
 
-  const mainType = pokeData.types;
+  // const mainType = pokeData.types;
 
   return (
     <>
@@ -84,20 +84,14 @@ const PokePage = () => {
               </div>
               <div>
                 <p>ability</p>
-                <h4>{pokeData.abilities[0].ability.name}</h4>
+                <h4>{pokeData.abilities}</h4>
               </div>
             </div>
-            {/* <div className={PokePageStyle.TypeSection}>
-              <h3>Type</h3>
-              <h4 style={{ backgroundColor: typeColors[mainType] }}>
-                {mainType}
-              </h4>
-            </div> */}
           </div>
         </div>
         <div>
           <div className={PokePageStyle.EvolutionSection}>
-            <EvolutionCard pokeData={pokeData} />
+            <EvolutionCard />
           </div>
         </div>
         <button onClick={() => router.push("/")}>

@@ -6,13 +6,13 @@ export interface Pokemon {
     genus: string | string[];
   };
   id: number;
-  types: any;
+  types: string[];
   number: string;
   height: number;
   species: string;
   flavor_text: string;
   weight: number;
-  abilities: any[];
+  abilities: string | undefined;
   images: {
     front_default: string;
     back_default: string;
@@ -27,7 +27,7 @@ export interface Pokemons {
   types: string[];
   number: string;
   height: number;
-  abilities: any[];
+  abilities: string | string[];
   images: {
     front_default: string;
     back_default: string;
@@ -57,13 +57,17 @@ export interface EvolutionChain {
   };
 }
 
-export interface AllPokemonResponse {
-  all: Pokemon[];
+export interface IAllSummeries {
+  allSummeries: {
+    name: string[];
+    url?: string | string[];
+  };
+  count?: number;
 }
 
 export interface PaginatedPokemonResponse {
-  all: Pokemon[];
-  types: any;
+  all: Pokemons[];
+  types?: string | string[];
   nextOffset: number | null;
 }
 

@@ -17,7 +17,7 @@ const Pagination: React.FC<PaginationProps> = ({
   const totalPages = Math.ceil(totalPokemons / pokemonsPerPage);
 
   const getPaginationButtons = () => {
-    let buttons = [];
+    const buttons = [];
 
     if (currentPage > 1) {
       buttons.push(

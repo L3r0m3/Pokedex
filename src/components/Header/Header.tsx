@@ -19,8 +19,6 @@ const Header = () => {
     <div className={HeaderStyle.HeaderContainer}>
       <div>
         <Image
-          /** @ts-ignore */
-          as="image"
           priority
           style={{ cursor: "pointer" }}
           onClick={() => router.push("/")}

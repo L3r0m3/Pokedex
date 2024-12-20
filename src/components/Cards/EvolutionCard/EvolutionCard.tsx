@@ -1,19 +1,21 @@
 import Image from "next/image";
 import PokePageStyle from "../../../app/[name]/PokePage.module.scss";
-import { LoadPokemon, typeColors } from "@/lib/data";
+import { LoadPokemon } from "@/lib/data";
 import { RiArrowRightWideLine } from "react-icons/ri";
 import { useRouter, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { EvolutionChain } from "@/types/types";
 
-interface EvolutionChain {
-  species: {
-    name: string;
-    url: string;
-  };
-  evolves_to: EvolutionChain[];
-}
+// interface EvolutionChain {
+//   species: {
+//     name: string | string[];
+//     url: string;
+//   };
+//   evolves_to: EvolutionChain[];
+//   chain: EvolutionChain;
+// }
 
-const EvolutionCard = ({ pokeData }: any) => {
+const EvolutionCard = () => {
   const [evolutionChain, setEvolutionChain] = useState<EvolutionChain | null>(
     null
   );
@@ -24,7 +26,6 @@ const EvolutionCard = ({ pokeData }: any) => {
     const fetchPokemon = async () => {
       try {
         const { evolutionChain } = await LoadPokemon(name);
-        /* @ts-ignore */
         setEvolutionChain(evolutionChain);
       } catch (error) {
         console.error("Error fetching Pokemon:", error);
@@ -40,11 +41,11 @@ const EvolutionCard = ({ pokeData }: any) => {
     return <div>Loading...</div>;
   }
 
-  const mainType = pokeData.types;
+  // const mainType = pokeData.types;
 
   const evolutionChainComponents: JSX.Element[] = [];
-  /* @ts-ignore */
-  let currentChain: EvolutionChain | null = evolutionChain.chain;
+
+  let currentChain: EvolutionChain | null = evolutionChain;
 
   function extractSpeciesID(url: string): number | null {
     const match = url.match(/\/(\d+)\//);
@@ -52,8 +53,8 @@ const EvolutionCard = ({ pokeData }: any) => {
   }
 
   while (currentChain) {
-    const speciesName = currentChain.species.name;
-    const speciesID = extractSpeciesID(currentChain.species.url);
+    const speciesName = currentChain.chain.species.name;
+    const speciesID = extractSpeciesID(currentChain.chain.species.url);
 
     if (speciesID !== null) {
       evolutionChainComponents.push(
@@ -70,22 +71,19 @@ const EvolutionCard = ({ pokeData }: any) => {
             width={150}
             height={150}
           />
-          {currentChain.evolves_to.length > 0 && (
+          {currentChain.chain.evolves_to.length > 0 && (
             <RiArrowRightWideLine size={60} color="white" />
           )}
           <div>
             <p>{speciesName}</p>
             <p>{`# ${speciesID.toString().padStart(4, "0")}`}</p>
-            {/* <h4 style={{ backgroundColor: typeColors[mainType] }}>
-              {mainType}
-            </h4> */}
           </div>
         </div>
       );
     }
 
-    if (currentChain.evolves_to.length > 0) {
-      currentChain = currentChain.evolves_to[0];
+    if (currentChain.chain.evolves_to.length > 0) {
+      currentChain = currentChain;
     } else {
       currentChain = null;
     }

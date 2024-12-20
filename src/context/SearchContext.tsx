@@ -1,21 +1,29 @@
 "use client";
 
-import React, { createContext, useContext, useState, useMemo } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useMemo,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { LoadPokemons, LoadAllPokemons } from "@/lib/data";
-import { Pokemon, PaginatedPokemonResponse } from "@/types/types";
+import { PaginatedPokemonResponse, Pokemons } from "@/types/types";
+import { IAllSummeries } from "@/types/types";
 
 interface SearchContextProps {
-  searchQuery: string;
+  searchQuery: string | undefined;
   handleSearchChange: (query: string) => void;
-  filteredPokemons: Pokemon[];
-  allPokemonData: any;
-  filterType: string;
+  filteredPokemons: Pokemons[];
+  allPokemonData: IAllSummeries["allSummeries"];
+  filterType: string | string[];
   setFilterType: (type: string) => void;
-  setSearchQuery: any;
+  setSearchQuery: Dispatch<SetStateAction<string | undefined>>;
   hasNextPage: boolean;
   fetchNextPage: () => void;
-  paginatedPokemons: Pokemon[];
+  paginatedPokemons: Pokemons[];
   isFetching: boolean;
   isLoading: boolean;
 }
@@ -34,13 +42,13 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [filterType, setFilterType] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState<string | undefined>(undefined);
 
   const handleSearchChange = (query: string) => {
     setSearchQuery(query);
   };
 
-  const { data: allPokemonData, isSuccess: isSummariesLoaded } = useQuery({
+  const { data: allPokemonData } = useQuery({
     queryKey: ["allPokemons"],
     queryFn: LoadAllPokemons,
   });
@@ -69,8 +77,7 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({
     }
 
     if (filterType) {
-      filtered = filtered.filter((pokemon) =>
-        /* @ts-ignore */
+      filtered = filtered.filter((pokemon): boolean =>
         pokemon.types.some((type) =>
           type.toLowerCase().includes(filterType.toLowerCase())
         )
@@ -86,7 +93,6 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({
 
     if (filterType) {
       allPokemons = allPokemons.filter((pokemon) =>
-        /* @ts-ignore */
         pokemon.types.some((type) =>
           type.toLowerCase().includes(filterType.toLowerCase())
         )
@@ -104,6 +110,7 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({
         setSearchQuery,
         filterType,
         setFilterType,
+        /* @ts-expect-error: Test123 **/
         allPokemonData,
         filteredPokemons,
         fetchNextPage,

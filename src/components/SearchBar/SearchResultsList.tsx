@@ -3,22 +3,28 @@
 import SearchResultListStyle from "./SearchResultList.module.scss";
 import { SearchResult } from "./SearchResult";
 import { useSearch } from "@/context/SearchContext";
-import { useEffect, useState } from "react";
+import { useEffect, useState, FC } from "react";
+import { IAllSummeries } from "@/types/types";
 
-export const SearchResultsList = ({ allPokemonData }: any) => {
+interface SearchResultListProps {
+  allPokemonData: IAllSummeries["allSummeries"];
+}
+
+export const SearchResultsList: FC<SearchResultListProps> = ({
+  allPokemonData,
+}) => {
   const { searchQuery } = useSearch();
-  const [filteredPokemons, setFilteredPokemons] = useState([]);
+  const [filteredPokemons, setFilteredPokemons] = useState<string[]>([]);
 
   useEffect(() => {
     try {
       if (searchQuery) {
-        /* @ts-ignore */
-        const filtered = allPokemonData.allSummeries.filter((pokemon) =>
-          pokemon.name.toLowerCase().includes(searchQuery.toLowerCase())
-        );
+        const filtered = allPokemonData.name.filter((pokemon) => {
+          pokemon.toLowerCase().includes(searchQuery.toLowerCase());
+        });
         setFilteredPokemons(filtered);
       } else {
-        setFilteredPokemons(allPokemonData.allSummeries);
+        setFilteredPokemons(allPokemonData?.name);
       }
     } catch {
       if (Error) {
@@ -29,40 +35,9 @@ export const SearchResultsList = ({ allPokemonData }: any) => {
 
   return (
     <div className={SearchResultListStyle.SearchResultList}>
-      {filteredPokemons?.map((pokemon, i) => (
+      {filteredPokemons.map((pokemon, i) => (
         <SearchResult key={i} pokemon={pokemon} />
       ))}
     </div>
   );
 };
-
-// "use client";
-
-// import SearchResultListStyle from "./SearchResultList.module.scss";
-// import { SearchResult } from "./SearchResult";
-// import { useSearch } from "@/context/SearchContext";
-// import { useEffect } from "react";
-
-// export const SearchResultsList = ({ allPokemonData }) => {
-//   const { searchQuery } = useSearch();
-
-//   useEffect(() => {
-//     if (searchQuery) {
-//       let names = allPokemonData.allSummeries.filter((pokemon) =>
-//         pokemon.name.some((pokemon) =>
-//           pokemon.name.toLowerCase().includes(searchQuery.toLowerCase())
-//         )
-//       );
-
-//       return names;
-//     }
-//   }, [allPokemonData, searchQuery]);
-
-//   return (
-//     <div className={SearchResultListStyle.SearchResultList}>
-//       {allPokemonData.allSummeries?.map((data, i) => {
-//         return <SearchResult filteredPokemons={data.name} key={i} />;
-//       })}
-//     </div>
-//   );
-// };

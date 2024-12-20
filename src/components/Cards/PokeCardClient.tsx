@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useCallback } from "react";
+import React, { useRef, useCallback, FC } from "react";
 import Image from "next/image";
 import PokeHomeCardStyle from "./PokeCard.module.scss";
 import { useRouter } from "next/navigation";
@@ -8,6 +8,10 @@ import { typeColors } from "@/lib/data";
 import { useSearch } from "@/context/SearchContext";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+
+type TSekeletonType = {
+  children?: React.ReactNode;
+};
 
 const PokeCardClient = () => {
   const router = useRouter();
@@ -24,8 +28,7 @@ const PokeCardClient = () => {
   const observer = useRef<IntersectionObserver | null>(null);
 
   const lastPokemonElementRef = useCallback(
-    /* @ts-ignore */
-    (node) => {
+    (node: HTMLDivElement) => {
       if (isLoading) return;
 
       if (observer.current) observer.current.disconnect();
@@ -81,9 +84,9 @@ const PokeCardClient = () => {
                   <h5>{`# ${pokemon.number}`}</h5>
                   <h4>{pokemon.name}</h4>
                   <div key={pokemon.id}>
-                    {mainTypes.map((type: any) => (
+                    {mainTypes.map((type) => (
                       <span
-                        key={type.id}
+                        key={type}
                         style={{ backgroundColor: bgColor }}
                         className={PokeHomeCardStyle.Type}
                       >
@@ -106,13 +109,14 @@ const PokeCardClient = () => {
         <>
           {filterType && filteredPokemons && (
             <div className={PokeHomeCardStyle.CardContainer}>
-              {paginatedPokemons.map((pokemons, i) => {
+              {paginatedPokemons.map((pokemons) => {
                 const mainType =
                   pokemons.types && pokemons.types.length
                     ? pokemons.types
                     : "normal";
 
-                const bgColor = mainType ? typeColors[mainType] : "#FFFFFF";
+                const bgColor =
+                  mainType.length > 0 ? typeColors[mainType[0]] : "#FFFFFF";
 
                 return (
                   <div key={pokemons.id}>
@@ -140,15 +144,15 @@ const PokeCardClient = () => {
   );
 };
 
-const Box = ({ children }: any) => {
+const Box: FC<TSekeletonType> = ({ children }) => {
   return (
     <div
       style={{
         display: "inline-flex",
         lineHeight: 2,
-        padding: "2rem",
+        padding: "1rem",
         marginBottom: "0.5rem",
-        width: 250,
+        width: 230,
         height: 250,
         minWidth: 100,
       }}

@@ -1,11 +1,15 @@
 "use client";
 
-import React from "react";
+import React, { FC } from "react";
 import { SearchProvider } from "@/context/SearchContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-const Providers = ({ children }: any) => {
+type TProviderType = {
+  children: React.ReactNode;
+};
+
+const Providers: FC<TProviderType> = ({ children }) => {
   const queryClient = new QueryClient();
 
   return (

@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useSearch } from "@/context/SearchContext";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import FilterTypeStyle from "./FilterTypeStyle.module.scss";
 
 function FilterType() {
-  const router = useRouter();
   const { filteredPokemons, filterType, setFilterType } = useSearch();
 
   const uniqueTypes = Array.from(
     new Set(filteredPokemons.flatMap((pokemon) => pokemon.types))
   );
 
-  const handleFilterTypeChange = (e: any) => {
-    setFilterType(e.target.value);
+  const handleFilterTypeChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setFilterType(event.target.value);
   };
 
   return (

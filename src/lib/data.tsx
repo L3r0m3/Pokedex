@@ -3,19 +3,22 @@ import {
   EvolutionChain,
   Pokemon,
   Pokemons,
-  AllPokemonResponse,
   PaginatedPokemonResponse,
+  IAllSummeries,
 } from "../types/types";
 
-export const LoadAllPokemons = async () => {
+export const LoadAllPokemons = async (): Promise<IAllSummeries> => {
   const pokeList = await api.get(`/pokemon?limit=10000&offset=0`);
-  /* @ts-ignore */
-  const allSummeries = pokeList.data.results.map((pokemon) => ({
-    name: pokemon.name,
-    url: pokemon.url,
-  }));
+  const allSummeries = pokeList.data.results.map(
+    (pokemon: { name: string; url: string }) => ({
+      name: pokemon.name,
+      url: pokemon.url,
+    })
+  );
 
-  return { allSummeries, count: pokeList.data.count };
+  // const count = pokeList.data.count;
+
+  return { allSummeries };
 };
 
 export const LoadPokemons = async (
@@ -23,18 +26,19 @@ export const LoadPokemons = async (
   offset: number
 ): Promise<PaginatedPokemonResponse> => {
   const pokeList = await api.get(`/pokemon?limit=${limit}&offset=${offset}`);
-  let all = [];
+  const all: Pokemons[] = [];
 
   for (let i = 0; i < pokeList.data.results.length; i++) {
-    let pokeDetails = await api.get(
+    const pokeDetails = await api.get(
       `/pokemon/${pokeList.data.results[i].name}`
     );
 
-    const obj = {
+    const obj: Pokemons = {
       name: pokeDetails.data.name,
       id: pokeDetails.data.id,
-      /* @ts-ignore */
-      types: pokeDetails.data.types.map((typeObj) => typeObj.type.name),
+      types: pokeDetails.data.types.map(
+        (typeObj: { type: { name: string | string[] } }) => typeObj.type.name
+      ),
       // types: pokeDetails.data.types[0].type.name,
       number: pokeDetails.data.id.toString().padStart(4, "0"),
       height: pokeDetails.data.height,
@@ -52,12 +56,11 @@ export const LoadPokemons = async (
 
   const nextOffset = pokeList.data ? offset + 12 : null;
 
-  /* @ts-ignore */
   return { all, nextOffset };
 };
 
 export async function LoadPokemon(
-  name: string | string[]
+  name: string | string[] | undefined
 ): Promise<{ pokemon: Pokemon; evolutionChain: EvolutionChain | null }> {
   const pokeDetails = await api.get(`/pokemon/${name}`);
   const speciesUrl = pokeDetails.data.species.url;
@@ -78,7 +81,7 @@ export async function LoadPokemon(
     weight: pokeDetails.data.weight,
     species: speciesDetails.data.genera,
     genus: speciesDetails.data.genera,
-    abilities: pokeDetails.data.abilities,
+    abilities: pokeDetails.data.abilities[0].ability.name,
     flavor_text: abilitiesDetails.data.flavour_text_entries,
     images: {
       front_default: pokeDetails.data.sprites.other.home.front_default,
