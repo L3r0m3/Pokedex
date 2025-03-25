@@ -71,7 +71,7 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({
     let filtered = paginatedPokemonData.pages.flatMap((page) => page.all);
 
     if (searchQuery) {
-      filtered = filtered?.filter((pokemon) =>
+      filtered = filtered?.filter((pokemon): boolean =>
         pokemon.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
@@ -92,7 +92,7 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({
     let allPokemons = paginatedPokemonData.pages.flatMap((page) => page.all);
 
     if (filterType) {
-      allPokemons = allPokemons.filter((pokemon) =>
+      allPokemons = allPokemons.filter((pokemon): boolean =>
         pokemon.types.some((type) =>
           type.toLowerCase().includes(filterType.toLowerCase())
         )
