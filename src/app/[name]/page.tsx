@@ -7,7 +7,6 @@ import { Pokemon } from "@/types/types";
 import Image from "next/image";
 import PokePageStyle from "./PokePage.module.scss";
 import EvolutionCard from "@/components/Cards/EvolutionCard/EvolutionCard";
-// import { PokemonType } from "@/types/types";
 
 const PokePage = () => {
   const { name } = useParams();
@@ -28,8 +27,6 @@ const PokePage = () => {
   if (!pokeData) {
     return <div>Loading...</div>;
   }
-
-  // const mainType = pokeData.types;
 
   return (
     <>

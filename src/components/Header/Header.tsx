@@ -8,12 +8,11 @@ import { useRouter } from "next/navigation";
 import { useSearch } from "@/context/SearchContext";
 import SearchBarStyle from "../SearchBar/SearchBar.module.scss";
 import SearchBar from "../SearchBar/SearchBar";
-import { SearchResultsList } from "../SearchBar/SearchResultsList";
 import FilterType from "../FilterType/FilterType";
 
 const Header = () => {
   const router = useRouter();
-  const { searchQuery, handleSearchChange, allPokemonData } = useSearch();
+  const { searchQuery, handleSearchChange } = useSearch();
 
   return (
     <div className={HeaderStyle.HeaderContainer}>
@@ -33,9 +32,8 @@ const Header = () => {
           searchQuery={searchQuery}
           onSearchChange={handleSearchChange}
         />
-        {searchQuery && <SearchResultsList allPokemonData={allPokemonData} />}
         <div>
-          <h6>Filter by type:</h6>
+          <h6>Filter type:</h6>
           <FilterType />
         </div>
       </div>

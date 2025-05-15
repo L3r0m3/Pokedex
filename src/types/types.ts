@@ -57,14 +57,6 @@ export interface EvolutionChain {
   };
 }
 
-export interface IAllSummeries {
-  allSummeries: {
-    name: string[];
-    url?: string | string[];
-  };
-  count?: number;
-}
-
 export interface PaginatedPokemonResponse {
   all: Pokemons[];
   types?: string | string[];

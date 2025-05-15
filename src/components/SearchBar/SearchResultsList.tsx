@@ -3,40 +3,43 @@
 import SearchResultListStyle from "./SearchResultList.module.scss";
 import { SearchResult } from "./SearchResult";
 import { useSearch } from "@/context/SearchContext";
-import { useEffect, useState, FC } from "react";
-import { IAllSummeries } from "@/types/types";
+import { useEffect, useState } from "react";
+import { LoadAllPokemons } from "@/lib/data";
 
-interface SearchResultListProps {
-  allPokemonData: IAllSummeries["allSummeries"];
-}
-
-export const SearchResultsList: FC<SearchResultListProps> = ({
-  allPokemonData,
-}) => {
-  const { searchQuery } = useSearch();
-  const [filteredPokemons, setFilteredPokemons] = useState<string[]>([]);
+export const SearchResultsList = () => {
+  const { searchQuery, setSearchQuery } = useSearch();
+  const [allPokeNames, setAllPokeNames] = useState<string[]>([]);
+  const [filteredPokeNames, setFilteredPokeNames] = useState<string[]>([]);
 
   useEffect(() => {
-    try {
-      if (searchQuery) {
-        const filtered = allPokemonData.name.filter((pokemon) => {
-          pokemon.toLowerCase().includes(searchQuery.toLowerCase());
-        });
-        setFilteredPokemons(filtered);
-      } else {
-        setFilteredPokemons(allPokemonData?.name);
-      }
-    } catch {
-      if (Error) {
-        console.log(Error);
-      }
+    const fetchAllPokemonNames = async () => {
+      const { allSummeriesNames } = await LoadAllPokemons();
+      setAllPokeNames(allSummeriesNames);
+    };
+
+    if (searchQuery) fetchAllPokemonNames();
+  }, [searchQuery]);
+
+  useEffect(() => {
+    if (searchQuery) {
+      const filtered = allPokeNames.filter((pokemon) => {
+        return pokemon.toLowerCase().indexOf(searchQuery.toLowerCase()) === 0;
+      });
+      setFilteredPokeNames(filtered);
+    } else {
+      setFilteredPokeNames([]);
     }
-  }, [allPokemonData, searchQuery]);
+  }, [searchQuery, allPokeNames]);
 
   return (
     <div className={SearchResultListStyle.SearchResultList}>
-      {filteredPokemons.map((pokemon, i) => (
-        <SearchResult key={i} pokemon={pokemon} />
+      {filteredPokeNames?.map((pokemon, i) => (
+        <SearchResult
+          key={i}
+          pokemon={pokemon}
+          setFilteredPokeNames={setFilteredPokeNames}
+          setSearchQuery={setSearchQuery}
+        />
       ))}
     </div>
   );

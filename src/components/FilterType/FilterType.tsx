@@ -1,6 +1,5 @@
 import React from "react";
 import { useSearch } from "@/context/SearchContext";
-// import { useRouter } from "next/navigation";
 import FilterTypeStyle from "./FilterTypeStyle.module.scss";
 
 function FilterType() {

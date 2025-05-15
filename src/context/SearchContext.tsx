@@ -8,16 +8,14 @@ import React, {
   Dispatch,
   SetStateAction,
 } from "react";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { LoadPokemons, LoadAllPokemons } from "@/lib/data";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { LoadPokemons } from "@/lib/data";
 import { PaginatedPokemonResponse, Pokemons } from "@/types/types";
-import { IAllSummeries } from "@/types/types";
 
 interface SearchContextProps {
   searchQuery: string | undefined;
   handleSearchChange: (query: string) => void;
   filteredPokemons: Pokemons[];
-  allPokemonData: IAllSummeries["allSummeries"];
   filterType: string | string[];
   setFilterType: (type: string) => void;
   setSearchQuery: Dispatch<SetStateAction<string | undefined>>;
@@ -47,11 +45,6 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({
   const handleSearchChange = (query: string) => {
     setSearchQuery(query);
   };
-
-  const { data: allPokemonData } = useQuery({
-    queryKey: ["allPokemons"],
-    queryFn: LoadAllPokemons,
-  });
 
   const {
     data: paginatedPokemonData,
@@ -110,8 +103,6 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({
         setSearchQuery,
         filterType,
         setFilterType,
-        /* @ts-expect-error: Test123 **/
-        allPokemonData,
         filteredPokemons,
         fetchNextPage,
         hasNextPage,

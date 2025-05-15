@@ -4,10 +4,9 @@ import {
   Pokemon,
   Pokemons,
   PaginatedPokemonResponse,
-  IAllSummeries,
 } from "../types/types";
 
-export const LoadAllPokemons = async (): Promise<IAllSummeries> => {
+export const LoadAllPokemons = async () => {
   const pokeList = await api.get(`/pokemon?limit=10000&offset=0`);
   const allSummeries = pokeList.data.results.map(
     (pokemon: { name: string; url: string }) => ({
@@ -16,9 +15,11 @@ export const LoadAllPokemons = async (): Promise<IAllSummeries> => {
     })
   );
 
-  // const count = pokeList.data.count;
+  const allSummeriesNames = allSummeries.map(
+    (pokemon: { name: string | string[] }) => pokemon.name
+  );
 
-  return { allSummeries };
+  return { allSummeriesNames };
 };
 
 export const LoadPokemons = async (
@@ -39,7 +40,6 @@ export const LoadPokemons = async (
       types: pokeDetails.data.types.map(
         (typeObj: { type: { name: string | string[] } }) => typeObj.type.name
       ),
-      // types: pokeDetails.data.types[0].type.name,
       number: pokeDetails.data.id.toString().padStart(4, "0"),
       height: pokeDetails.data.height,
       abilities: pokeDetails.data.abilities,
