@@ -10,7 +10,7 @@ import React, {
 } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { LoadPokemons } from "@/lib/data";
-import { PaginatedPokemonResponse, Pokemons } from "@/types/types";
+import { PreloadedPokemonResponse, Pokemons } from "@/types/types";
 
 interface SearchContextProps {
   searchQuery: string | undefined;
@@ -21,7 +21,7 @@ interface SearchContextProps {
   setSearchQuery: Dispatch<SetStateAction<string | undefined>>;
   hasNextPage: boolean;
   fetchNextPage: () => void;
-  paginatedPokemons: Pokemons[];
+  preloadedPokemons: Pokemons[];
   isFetching: boolean;
   isLoading: boolean;
 }
@@ -47,12 +47,12 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const {
-    data: paginatedPokemonData,
+    data: preloadedPokemonData,
     fetchNextPage,
     hasNextPage,
     isFetching,
     isLoading,
-  } = useInfiniteQuery<PaginatedPokemonResponse>({
+  } = useInfiniteQuery<PreloadedPokemonResponse>({
     queryKey: ["pokemons"],
     queryFn: ({ pageParam = 0 }) => LoadPokemons(12, pageParam as number),
     getNextPageParam: (lastPage) => lastPage.nextOffset ?? null,
@@ -60,8 +60,8 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({
   });
 
   const filteredPokemons = useMemo(() => {
-    if (!paginatedPokemonData || !paginatedPokemonData.pages[0].all) return [];
-    let filtered = paginatedPokemonData.pages.flatMap((page) => page.all);
+    if (!preloadedPokemonData || !preloadedPokemonData.pages[0].all) return [];
+    let filtered = preloadedPokemonData.pages.flatMap((page) => page.all);
 
     if (searchQuery) {
       filtered = filtered?.filter((pokemon): boolean =>
@@ -71,29 +71,29 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({
 
     if (filterType) {
       filtered = filtered.filter((pokemon): boolean =>
-        pokemon.types.some((type) =>
+        pokemon.types.some((type): boolean =>
           type.toLowerCase().includes(filterType.toLowerCase())
         )
       );
     }
 
     return filtered;
-  }, [searchQuery, filterType, paginatedPokemonData]);
+  }, [searchQuery, filterType, preloadedPokemonData]);
 
-  const paginatedPokemons = useMemo(() => {
-    if (!paginatedPokemonData || !paginatedPokemonData.pages) return [];
-    let allPokemons = paginatedPokemonData.pages.flatMap((page) => page.all);
+  const preloadedPokemons = useMemo(() => {
+    if (!preloadedPokemonData || !preloadedPokemonData.pages) return [];
+    let allPokemons = preloadedPokemonData.pages.flatMap((page) => page.all);
 
     if (filterType) {
       allPokemons = allPokemons.filter((pokemon): boolean =>
-        pokemon.types.some((type) =>
+        pokemon.types.some((type): boolean =>
           type.toLowerCase().includes(filterType.toLowerCase())
         )
       );
     }
 
     return allPokemons;
-  }, [paginatedPokemonData, filterType]);
+  }, [preloadedPokemonData, filterType]);
 
   return (
     <SearchContext.Provider
@@ -104,9 +104,9 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({
         filterType,
         setFilterType,
         filteredPokemons,
+        preloadedPokemons,
         fetchNextPage,
         hasNextPage,
-        paginatedPokemons,
         isFetching,
         isLoading,
       }}

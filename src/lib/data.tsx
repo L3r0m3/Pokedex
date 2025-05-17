@@ -3,7 +3,7 @@ import {
   EvolutionChain,
   Pokemon,
   Pokemons,
-  PaginatedPokemonResponse,
+  PreloadedPokemonResponse,
 } from "../types/types";
 
 export const LoadAllPokemons = async () => {
@@ -25,7 +25,7 @@ export const LoadAllPokemons = async () => {
 export const LoadPokemons = async (
   limit: number,
   offset: number
-): Promise<PaginatedPokemonResponse> => {
+): Promise<PreloadedPokemonResponse> => {
   const pokeList = await api.get(`/pokemon?limit=${limit}&offset=${offset}`);
   const all: Pokemons[] = [];
 

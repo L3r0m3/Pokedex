@@ -57,7 +57,7 @@ export interface EvolutionChain {
   };
 }
 
-export interface PaginatedPokemonResponse {
+export interface PreloadedPokemonResponse {
   all: Pokemons[];
   types?: string | string[];
   nextOffset: number | null;

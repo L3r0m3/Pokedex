@@ -22,7 +22,7 @@ const PokeCardClient = () => {
     hasNextPage,
     isFetching,
     isLoading,
-    paginatedPokemons,
+    preloadedPokemons,
   } = useSearch();
 
   const observer = useRef<IntersectionObserver | null>(null);
@@ -52,9 +52,9 @@ const PokeCardClient = () => {
   return (
     <div>
       <>
-        {paginatedPokemons && !filterType && (
+        {preloadedPokemons && !filterType && (
           <div className={PokeHomeCardStyle.CardContainer}>
-            {paginatedPokemons.map((pokemon, index) => {
+            {preloadedPokemons.map((pokemon, index) => {
               const mainTypes = pokemon.types;
               const bgColor =
                 mainTypes.length > 0 ? typeColors[mainTypes[0]] : "#FFFFFF";
@@ -109,7 +109,7 @@ const PokeCardClient = () => {
         <>
           {filterType && filteredPokemons && (
             <div className={PokeHomeCardStyle.CardContainer}>
-              {paginatedPokemons.map((pokemons) => {
+              {preloadedPokemons.map((pokemons) => {
                 const mainType =
                   pokemons.types && pokemons.types.length
                     ? pokemons.types

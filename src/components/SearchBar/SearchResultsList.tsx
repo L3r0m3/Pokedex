@@ -22,7 +22,7 @@ export const SearchResultsList = () => {
 
   useEffect(() => {
     if (searchQuery) {
-      const filtered = allPokeNames.filter((pokemon) => {
+      const filtered = allPokeNames.filter((pokemon): boolean => {
         return pokemon.toLowerCase().indexOf(searchQuery.toLowerCase()) === 0;
       });
       setFilteredPokeNames(filtered);
