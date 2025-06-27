@@ -44,8 +44,8 @@ const PokeCardClient = () => {
 
   if (isLoading)
     return (
-      <div>
-        <Skeleton count={3} />
+      <div className={PokeHomeCardStyle.CardContainer}>
+        <Skeleton count={3} wrapper={Box} />
       </div>
     );
 
@@ -150,10 +150,9 @@ const Box: FC<TSekeletonType> = ({ children }) => {
       style={{
         display: "inline-flex",
         lineHeight: 2,
-        padding: "1rem",
-        marginBottom: "0.5rem",
-        width: 230,
-        height: 250,
+        margin: "0.5rem",
+        width: 220,
+        height: 200,
         minWidth: 100,
       }}
     >

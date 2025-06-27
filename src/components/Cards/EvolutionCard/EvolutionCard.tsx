@@ -69,15 +69,20 @@ const EvolutionCard = () => {
             width={150}
             height={150}
           />
-          {currentChain.evolves_to.length > 0 && (
-            <RiArrowRightWideLine size={60} color="white" />
-          )}
-          <div>
+          <div className={PokePageStyle.EvolutionInfo}>
             <p>{speciesName}</p>
             <p>{`# ${speciesID.toString().padStart(4, "0")}`}</p>
           </div>
         </div>
       );
+
+      if (currentChain.evolves_to.length > 0) {
+        evolutionChainComponents.push(
+          <div key={`arrow-${speciesID}`} className={PokePageStyle.ArrowContainer}>
+            <RiArrowRightWideLine size={60} color="white" />
+          </div>
+        );
+      }
     }
 
     if (currentChain.evolves_to.length > 0) {
